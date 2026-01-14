@@ -1,9 +1,10 @@
 
 import React from "react";
 
+export const dynamic = 'force-dynamic'
+
 const AboutPage = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 4000));
-  throw new Error()
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   return <div>This is about page.</div>;
 };
 
