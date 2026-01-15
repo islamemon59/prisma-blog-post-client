@@ -10,6 +10,9 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
+import { adminRoutes } from "@/routes/adminRoutes";
+import { userRoutes } from "@/routes/userRoutes";
 
 // This is sample data.
 const data = {
@@ -20,24 +23,41 @@ const data = {
       url: "#",
       items: [
         {
-          title: "WriteBlog",
-          url: "/dashboard/write-blog",
+          title: "Admin Dashboard",
+          url: "/admin-dashboard",
         },
         {
-          title: "Analytics",
-          url: "/dashboard/analytics",
+          title: "User Dashboard",
+          url: "/dashboard",
         },
       ],
     },
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user,
+  ...props
+}: {
+  user: { role: string } & React.ComponentProps<typeof Sidebar>;
+}) {
+  let routes = [];
+  switch (user.role) {
+    case "admin":
+      routes = adminRoutes
+      break;
+case "user":
+  routes = userRoutes;
+  break
+    default:
+      routes
+      break;
+  }
   return (
     <Sidebar {...props}>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
+        {routes.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -45,7 +65,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <a href={item.url}>{item.title}</a>
+                      <Link href={item.url}>{item.title}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
