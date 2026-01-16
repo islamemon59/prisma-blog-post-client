@@ -13,27 +13,28 @@ import {
 import Link from "next/link";
 import { adminRoutes } from "@/routes/adminRoutes";
 import { userRoutes } from "@/routes/userRoutes";
+import { Routes } from "@/types";
 
 // This is sample data.
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Admin Dashboard",
-          url: "/admin-dashboard",
-        },
-        {
-          title: "User Dashboard",
-          url: "/dashboard",
-        },
-      ],
-    },
-  ],
-};
+// const data = {
+//   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+//   navMain: [
+//     {
+//       title: "Getting Started",
+//       url: "#",
+//       items: [
+//         {
+//           title: "Admin Dashboard",
+//           url: "/admin-dashboard",
+//         },
+//         {
+//           title: "User Dashboard",
+//           url: "/dashboard",
+//         },
+//       ],
+//     },
+//   ],
+// };
 
 export function AppSidebar({
   user,
@@ -41,16 +42,16 @@ export function AppSidebar({
 }: {
   user: { role: string } & React.ComponentProps<typeof Sidebar>;
 }) {
-  let routes = [];
+  let routes: Routes[] = [];
   switch (user.role) {
     case "admin":
-      routes = adminRoutes
+      routes = adminRoutes;
       break;
-case "user":
-  routes = userRoutes;
-  break
+    case "user":
+      routes = userRoutes;
+      break;
     default:
-      routes
+      routes = [];
       break;
   }
   return (
