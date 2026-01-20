@@ -3,7 +3,14 @@ import { blogService } from "@/services/blog.service";
 import { BlogPost } from "@/types";
 
 export default async function Home() {
-  const data = await blogService.getBlog()
+  const data = await blogService.getBlog({
+    isFeatured: false,
+    search: ""
+  },
+{
+  cache: "no-store",
+  revalidate: 10
+})
   console.log(data?.data.data.data);
   return (
     <div className=" flex justify-center items-center gap-10">
