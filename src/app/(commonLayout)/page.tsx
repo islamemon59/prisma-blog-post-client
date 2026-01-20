@@ -1,14 +1,15 @@
-import { Button } from "@/components/ui/button";
-import { userService } from "@/services/user.service";
+import BlogCard from "@/components/modules/homepage/BlogCard";
+import { blogService } from "@/services/blog.service";
+import { BlogPost } from "@/types";
 
 export default async function Home() {
-  const session = await userService.getSession();
-  console.log(session);
+  const data = await blogService.getBlog()
+  console.log(data?.data.data.data);
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <Button variant="outline" size="lg">
-        Click Me
-      </Button>
+    <div className=" flex justify-center items-center gap-10">
+      {data?.data?.data?.data.map((post: BlogPost) =>( 
+        <BlogCard key={post.id} post={post}/>
+      ))}
     </div>
   );
 }
