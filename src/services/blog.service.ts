@@ -32,13 +32,21 @@ export const blogService = {
       if (options?.revalidate) {
         config.next = { revalidate: options.revalidate };
       }
-
-      console.log(url.toString(), config);
       const res = await fetch(url);
 
       const data = await res.json();
 
       return { data };
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getBlogPosts: async function (id: string) {
+    try {
+      const res = await fetch(`${API_URL}/api/v1/posts/${id}`);
+
+      return await res.json();
     } catch (error) {
       console.log(error);
     }

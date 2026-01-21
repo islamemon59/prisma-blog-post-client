@@ -11,7 +11,6 @@ export default async function Home() {
   cache: "no-store",
   revalidate: 10
 })
-  console.log(data?.data.data.data);
   return (
     <div className=" flex justify-center items-center gap-10">
       {data?.data?.data?.data.map((post: BlogPost) =>( 
