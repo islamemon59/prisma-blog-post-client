@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(1, "This field is required"),
@@ -25,6 +27,13 @@ const formSchema = z.object({
 });
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const signIn = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "http://localhost:3000",
+    });
+    console.log(data);
+  };
   const form = useForm({
     defaultValues: {
       name: "",
@@ -36,6 +45,18 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     },
     onSubmit: async ({ value }) => {
       console.log(value);
+      const toastId = toast.loading("Creating user");
+      try {
+        const { data, error } = await authClient.signUp.email(value);
+        if (error) {
+          toast.error(error.message, { id: toastId });
+          return;
+        }
+
+        toast.success("User creating successfully", { id: toastId });
+      } catch (error) {
+        toast.error("Something went wrong, please try again.", { id: toastId });
+      }
     },
   });
   return (
@@ -124,9 +145,18 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
           </FieldGroup>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-end">
-        <Button form="orderForm" type="submit">
-          Submit
+      <CardFooter className="flex flex-col gap-5 justify-end">
+        <Button form="orderForm" type="submit" className="w-full">
+          Signup
+        </Button>
+
+        <Button
+          onClick={() => signIn()}
+          variant="outline"
+          type="button"
+          className="w-full"
+        >
+          Signup with Google
         </Button>
       </CardFooter>
     </Card>
