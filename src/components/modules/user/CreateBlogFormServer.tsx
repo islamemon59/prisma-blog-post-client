@@ -31,7 +31,6 @@ const CreateBlogFormServer = () => {
         .map((item) => item.trim())
         .filter((item) => item !== ""),
     };
-    console.log(JSON.stringify(blogData));
     const cookieStore = await cookies()
 
     const res = await fetch(`${API_URL}/api/v1/posts`, {

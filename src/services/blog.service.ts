@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { cookies } from "next/headers";
 
 const API_URL = env.API_URL;
 
@@ -9,6 +10,12 @@ interface Options {
 interface GetBlogsParams {
   isFeatured?: boolean;
   search?: string;
+}
+
+export interface BlogData {
+  title: string;
+  content: string;
+  tags: string[];
 }
 
 export const blogService = {
@@ -50,6 +57,30 @@ export const blogService = {
       return await res.json();
     } catch (error) {
       console.log(error);
+    }
+  },
+
+  createBlogPost: async function (blogData: BlogData) {
+    try {
+      const cookieStore = await cookies();
+
+      const res = await fetch(`${API_URL}/api/v1/posts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieStore.toString(),
+        },
+        body: JSON.stringify(blogData),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        return { data: null, error: { message: data.error } };
+      }
+
+      return { data, error: null };
+    } catch (error: any) {
+      return { data: null, error: { message: error.message } };
     }
   },
 };
