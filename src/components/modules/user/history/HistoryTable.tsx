@@ -14,7 +14,7 @@ const HistoryTable = ({posts}: {posts: BlogPost[]}) => {
     </TableRow>
   </TableHeader>
   <TableBody>
-    {posts.map((item => <TableRow>
+    {posts.map((item => <TableRow key={item.id}>
         <TableCell>{item.title}</TableCell>
         <TableCell>{item.content}</TableCell>
         <TableCell>{item.views}</TableCell>

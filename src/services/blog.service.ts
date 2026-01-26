@@ -10,6 +10,7 @@ interface Options {
 interface GetBlogsParams {
   isFeatured?: boolean;
   search?: string;
+  page?: string
 }
 
 export interface BlogData {
